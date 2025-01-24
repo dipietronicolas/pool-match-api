@@ -21,7 +21,6 @@ const createTables = async () => {
   `);
 }
 
-
 // Run the table creation and seeding process
 export const initializeDatabase = async () => {
   try {

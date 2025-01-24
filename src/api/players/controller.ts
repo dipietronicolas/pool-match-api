@@ -1,13 +1,16 @@
 import { Router } from 'express';
-import { playerIdSchema, userSchema, validateBody, validateParams } from './middleware';
+import {
+  getPlayersQueryParamsSchema, playerIdSchema, userSchema, 
+} from '../schemas';
+import { validateBody, validateParams, validateQueryParams } from '../middleware';
 import playerService from './service';
 
 const playersRouter = Router();
 
-playersRouter.get('/players', playerService.getAllPlayers);
+playersRouter.get('/players', validateQueryParams(getPlayersQueryParamsSchema), playerService.getAllPlayers);
 playersRouter.get('/players/:playerId', validateParams(playerIdSchema), playerService.findPlayerById);
 playersRouter.post('/players', validateBody(userSchema), playerService.savePlayer);
-playersRouter.put('/players/:playerId', validateParams(playerIdSchema), playerService.updatePlayer);
+playersRouter.put('/players/:playerId', validateParams(playerIdSchema), validateBody(userSchema), playerService.updatePlayer);
 playersRouter.delete('/players/:playerId', validateParams(playerIdSchema), playerService.deletePlayer);
 
 export default playersRouter;
