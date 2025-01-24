@@ -102,6 +102,9 @@ const createMatch = async (
   const start_time = req.body.start_time;
   const end_time = getEndTime();
 
+  if(start_time > end_time)
+    next(httpErrors.badRequestError('End time needs to be higher than start time.'));
+
   try {
     await pool.query('BEGIN');
     const results = await hasOverlappingMatch({ player1_id, player2_id, start_time });
